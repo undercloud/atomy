@@ -34,8 +34,8 @@ var Monkey = Animal.extend({
 
 var monkey = new Monkey('Joe')
 
-monkey.say()
-monkey.jump()
+monkey.say() //I'am Joe
+monkey.jump() //Jumping
 ```
 
 ##public
@@ -124,11 +124,11 @@ for object use Object.create
 ##namespace
 ```JavaScript
 Object.namespace('milkyway.solar.earth')
-// window.java.lang.reflect
+// window.milkyway.solar.earth
 
 var scope = {}
 Object.namespace('milkyway.solar.earth',scope)
-// scope.java.lang.reflect
+// scope.milkyway.solar.earth
 
 Object.namespace('milkyway.solar.earth.life').Animal = Object.extend({
 	/*...*/
