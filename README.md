@@ -1,134 +1,144 @@
 # jsoop
 Java Script OOP
 
+# class creation
 ```JavaScript
-(function(scope){
-	"use strict";
-
-	if(typeof Object.namespace != 'function'){
-		Object.namespace = function(ns,g){
-			var chain = ns.split('.'),
-				root = g || scope;
-
-			for(var i=0,l=chain.length;i<l;i++){
-				if(typeof root[chain[i]] === "undefined"){
-					root[chain[i]] = {};
-				}
-
-				root = root[chain[i]];
-			}
-
-			return root;
-		};
+var Animal = Object.extend({
+	weight: 0,
+	abilities: ['eat','breath','see'],
+	constructor: function(name){
+		this.name = name;
+	},
+	say: function(){
+		console.log("I'am " + this.name)
 	}
+})
 
-	if(typeof Object.create != 'function'){
-		Object.create = (function(){
-			var tmp = function(){};
+var dogg = new Animal('Snoop');
+var cat  = new Animal('Tom');
 
-			return function(prototype){
-				if(arguments.length > 1){
-					throw Error('Second argument not supported');
-				}
-
-				if(typeof prototype != 'object'){
-					throw TypeError('Argument must be an object');
-				}
-
-				tmp.prototype = prototype;
-				var result = new tmp();
-				tmp.prototype = null;
-
-				return result;
-			};
-		})();
+dogg.say()
+cat.say()
+```
+#inheritance
+```JavaScript
+var Monkey = Animal.extend({
+	constructor: function(name){
+		Monkey.superclass.constructor.call(this,name)
+	},
+	jump: function(){
+		console.log('Jumping')
 	}
+})
 
-	if(typeof Array.prototype.clone != 'function'){
-		Array.prototype.clone = function(){
-			return this.slice(0);
-		}
+var monkey = new Monkey('Joe')
+
+monkey.say()
+monkey.jump()
+```
+
+#public
+```JavaScript
+Animal.prototype.someVal = 0;
+Animal.prototype.someAction = function(){
+
+}
+```
+
+#private
+```JavaScript
+Animal.prototype.__someVal__ = 0;
+Animal.prototype.__someAction__ = function(){
+	/*...*/
+}
+```
+
+#static 
+```JavaScript
+Animal.someVal = 0;
+Animal.someAction = function(){
+	/*...*/
+}
+```
+
+#instanceof
+```JavaScript
+var Animal = Object.extend({/*...*/})
+
+var Monkey = Animal.extend({/*...*/})
+var Human  = Monkey.extend({/*...*/}) 
+
+var Wolf = Animal.extend({/*...*/})
+var Dog  = Wolf.extend({/*...*/})
+
+console.log(new Dog() instanceof Wolf) //true
+console.log(new Dog() instanceof Animal) //true
+console.log(new Dog() instanceof Monkey) //false
+```
+
+#singletone
+```JavaScript
+Animal.__instance__ = null;
+Animal.getInstance = function(){
+	if(this.__instance__ === null)
+		this.__instance__ = new Animal();
+
+	return this.__instance__;
+}
+```
+
+#reference
+```JavaScript
+var IntegerArray = Array.extend({
+	myarray: [5,8,1,3,2],
+	getArray: function(){
+		return this.myarray;
 	}
+})
 
-	function mixin(dst){
-		for(var i=1,l=arguments.length;i<l; i++){
-			for(var prop in arguments[i]){
-				if(arguments[i].hasOwnProperty(prop)){
-					dst[prop] = arguments[i][prop];
-				}
-			}
-		}
+var ia = new IntegerArray();
+var sorted = ia.getArray().sort();
 
-		return dst;
+console.log(sorted,ia.getArray())
+//([1, 2, 3, 5, 8],[1, 2, 3, 5, 8])
+```
+
+using clone
+```JavaScript
+var IntegerArray = Array.extend({
+	myarray: [5,8,1,3,2],
+	getArray: function(){
+		return this.myarray.clone();
 	}
+})
 
-	Function.prototype.extend = function(proto){
-		var that = this;
-		proto = proto || {};
-		var constructor = proto.hasOwnProperty('constructor') 
-			? proto.constructor 
-			: function() { that.apply(this, arguments); };
+var ia = new IntegerArray();
+var sorted = ia.getArray().sort();
 
-		var F = function(){};
-		F.prototype = this.prototype;
-		constructor.prototype = mixin(new F(), proto);
-		constructor.superclass = this.prototype;
-		constructor.prototype.constructor = constructor;
-		
-		return constructor;
-	}
-})(this)
+console.log(sorted,ia.getArray())
+// ([1, 2, 3, 5, 8],[5, 8, 1, 3, 2])
+```
+for object use Object.create
 
-	var Animal = Object.extend({
-		brainWeight: 0,
-		statics: {
-			
-		}
-		constructor: function(name){
-			this.name = name;
-		},
-		say: function(){
-			return 'Zzz...';
-		}
-	})
+#namespace
+```JavaScript
+Object.namespace('milkyway.solar.earth')
+// window.java.lang.reflect
 
-	var Monkey = Animal.extend({
-		brainWeight: 400,
-		constructor: function(name){
-			Monkey.superclass.constructor.call(this,name)
-		},
-		jump: function(){
-			return 'Jump, jump!';
-		}
-	})
+var scope = {}
+Object.namespace('milkyway.solar.earth',scope)
+// scope.java.lang.reflect
 
-	var Human = Monkey.extend({
-		brainWeight: 1200,
-		constructor: function(name){
-			Monkey.superclass.constructor.call(this,name)
-		},
-		say: function(){
-			return "I'am " + this.name;
-		},
-		programming: function(){
-			return 'JavaScript!';
-		}
-	})
+Object.namespace('milkyway.solar.earth.life').Animal = Object.extend({
+	/*...*/
+})
 
-	var bob = new Human('Bob');
-	console.log(
-		bob.say(),
-		bob.jump(),
-		bob.programming(),
-		bob instanceof Animal
-	)
+var animal = new milkyway.solar.earth.life.Animal();
+```
 
-	//singletone
-	/*Animal.__instance__ = null;
-	Animal.getInstance = function(){
-		if(this.__instance__ === null)
-			this.__instance__ = new Animal();
+#isset
+```JavaScript
+Object.isset('window.Array.prototype.sort') //true
 
-		return this.__instance__;
-	}*/
+Object.isset('sort',Array.prototype) // true
 ```
