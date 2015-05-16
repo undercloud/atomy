@@ -1,7 +1,7 @@
 # jsoop
 Java Script OOP
 
-# class creation
+## class creation
 ```JavaScript
 var Animal = Object.extend({
 	weight: 0,
@@ -17,10 +17,11 @@ var Animal = Object.extend({
 var dogg = new Animal('Snoop');
 var cat  = new Animal('Tom');
 
-dogg.say()
-cat.say()
+dogg.say() //I'am Snoop
+cat.say() //I'am Tom
 ```
-#inheritance
+
+##inheritance
 ```JavaScript
 var Monkey = Animal.extend({
 	constructor: function(name){
@@ -37,15 +38,15 @@ monkey.say()
 monkey.jump()
 ```
 
-#public
+##public
 ```JavaScript
 Animal.prototype.someVal = 0;
 Animal.prototype.someAction = function(){
-
+	/*...*/
 }
 ```
 
-#private
+##private
 ```JavaScript
 Animal.prototype.__someVal__ = 0;
 Animal.prototype.__someAction__ = function(){
@@ -53,7 +54,7 @@ Animal.prototype.__someAction__ = function(){
 }
 ```
 
-#static 
+##static 
 ```JavaScript
 Animal.someVal = 0;
 Animal.someAction = function(){
@@ -61,7 +62,7 @@ Animal.someAction = function(){
 }
 ```
 
-#instanceof
+##instanceof
 ```JavaScript
 var Animal = Object.extend({/*...*/})
 
@@ -76,7 +77,7 @@ console.log(new Dog() instanceof Animal) //true
 console.log(new Dog() instanceof Monkey) //false
 ```
 
-#singletone
+##singletone
 ```JavaScript
 Animal.__instance__ = null;
 Animal.getInstance = function(){
@@ -87,7 +88,7 @@ Animal.getInstance = function(){
 }
 ```
 
-#reference
+##reference
 ```JavaScript
 var IntegerArray = Array.extend({
 	myarray: [5,8,1,3,2],
@@ -120,7 +121,7 @@ console.log(sorted,ia.getArray())
 ```
 for object use Object.create
 
-#namespace
+##namespace
 ```JavaScript
 Object.namespace('milkyway.solar.earth')
 // window.java.lang.reflect
@@ -136,7 +137,7 @@ Object.namespace('milkyway.solar.earth.life').Animal = Object.extend({
 var animal = new milkyway.solar.earth.life.Animal();
 ```
 
-#isset
+##isset
 ```JavaScript
 Object.isset('window.Array.prototype.sort') //true
 
