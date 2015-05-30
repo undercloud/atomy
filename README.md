@@ -53,6 +53,18 @@ Animal.prototype.__someAction__ = function(){
 	/*...*/
 }
 ```
+or
+```JavaScript
+var Animal = Object.extend(function(){
+	var foo = 'bar';
+
+	return {
+		getPrivate: function(){
+			return foo;
+		}
+	}
+}())
+```
 
 ##static 
 ```JavaScript
