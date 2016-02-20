@@ -88,6 +88,9 @@
 		constructor.superclass = this.prototype;
 		constructor.prototype.constructor = constructor;
 		
+		//constructor.extend = __A__.prototype.extend;
+		//Brid
+		
 		return constructor;
 	}
 })(this)
