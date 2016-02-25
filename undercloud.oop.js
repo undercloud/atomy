@@ -1,30 +1,50 @@
 (function(scope){
 	"use strict";
 
-	if(typeof Object.namespace != 'function'){
-		Object.namespace = function(ns,g){
-			var chain = ns.split('.'),
-				root = g || scope;
+	var Atomy = {};
 
-			for(var i=0,l=chain.length;i<l;i++){
-				if(typeof root[chain[i]] === "undefined"){
-					root[chain[i]] = {};
-				}
+	Atomy.namespace = function(ns, g){
+		var chain = ns.split('.'),
+			root = g || scope;
 
-				root = root[chain[i]];
+		for(var i = 0, l = chain.length; i < l; i++){
+			if(typeof root[chain[i]] === "undefined"){
+				root[chain[i]] = {};
 			}
 
-			return root;
-		};
+			root = root[chain[i]];
+		}
+
+		return root;
+	};
+
+	Atomy.constant = function(object, constant, value) {
+		Object.defineProperty (object, constant,{ value : value, writable: false });
 	}
 
-	if(typeof Object.isset != 'function'){
-		Object.isset = function(ns,g){
-			var chain = ns.split('.'),
-				root = g || scope;
+	Atomy.inject = function(object, prototype) {
+		if (typeof object.prototype == "undefined") {
+			object.prototype = {}
+		}
 
-			for(var i=0,l=chain.length;i<l;i++){
-				if(typeof root[chain[i]] === "undefined"){
+		for (var key in prototype) {
+			object.prototype[key] = prototype[key];
+		}
+	}
+
+	Atomy.static = function(object, statics) {
+		for (var key in statics) {
+			object[key] = statics[key];
+		}
+	}
+
+	if (typeof Object.prototype.isset != 'function') {
+		Object.prototype.isset = function(ns){
+			var chain = ns.split('.'),
+				root = this;
+
+			for (var i = 0, l = chain.length; i < l; i++) {
+				if (typeof root[chain[i]] === "undefined") {
 					return false;
 				}
 
@@ -35,38 +55,10 @@
 		};
 	}
 
-	if(typeof Object.create != 'function'){
-		Object.create = (function(){
-			var tmp = function(){};
-
-			return function(prototype){
-				if(arguments.length > 1){
-					throw Error('Second argument not supported');
-				}
-
-				if(typeof prototype != 'object'){
-					throw TypeError('Argument must be an object');
-				}
-
-				tmp.prototype = prototype;
-				var result = new tmp();
-				tmp.prototype = null;
-
-				return result;
-			};
-		})();
-	}
-
-	if(typeof Array.prototype.clone != 'function'){
-		Array.prototype.clone = function(){
-			return this.slice(0);
-		}
-	}
-
 	function mixin(dst){
-		for(var i=1,l=arguments.length;i<l; i++){
-			for(var prop in arguments[i]){
-				if(arguments[i].hasOwnProperty(prop)){
+		for (var i = 1, l = arguments.length; i < l; i++) {
+			for (var prop in arguments[i]) {
+				if (arguments[i].hasOwnProperty(prop)) {
 					dst[prop] = arguments[i][prop];
 				}
 			}
@@ -75,7 +67,7 @@
 		return dst;
 	}
 
-	Function.prototype.extend = function(proto){
+	Function.prototype.extend = function(proto) {
 		var that = this;
 		proto = proto || {};
 		var constructor = proto.hasOwnProperty('constructor') 
@@ -88,9 +80,16 @@
 		constructor.superclass = this.prototype;
 		constructor.prototype.constructor = constructor;
 		
-		//constructor.extend = __A__.prototype.extend;
-		//Brid
-		
 		return constructor;
+	}
+
+	if (scope.isset('module.exports')) {
+		scope.module.exports = Atomy;
+	} else if(scope.isset('define.amd')) {
+		define([], function() {
+			return Atomy;
+		});
+	} else {
+		scope.Atomy = Atomy;
 	}
 })(this)
