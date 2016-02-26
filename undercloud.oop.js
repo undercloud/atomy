@@ -20,6 +20,8 @@
 
 	Atomy.constant = function(object, constant, value) {
 		Object.defineProperty (object, constant,{ value : value, writable: false });
+		
+		return this;
 	}
 
 	Atomy.inject = function(object, prototype) {
@@ -30,30 +32,32 @@
 		for (var key in prototype) {
 			object.prototype[key] = prototype[key];
 		}
+
+		return this;
 	}
 
-	Atomy.static = function(object, statics) {
+	Atomy.statics = function(object, statics) {
 		for (var key in statics) {
 			object[key] = statics[key];
 		}
+
+		return this;
 	}
 
-	if (typeof Object.prototype.isset != 'function') {
-		Object.prototype.isset = function(ns){
-			var chain = ns.split('.'),
-				root = this;
+	Atomy.isset = function(ns, root){
+		var chain = ns.split('.'),
+			root = root || this;
 
-			for (var i = 0, l = chain.length; i < l; i++) {
-				if (typeof root[chain[i]] === "undefined") {
-					return false;
-				}
-
-				root = root[chain[i]];
+		for (var i = 0, l = chain.length; i < l; i++) {
+			if (typeof root[chain[i]] === "undefined") {
+				return false;
 			}
 
-			return true;
-		};
-	}
+			root = root[chain[i]];
+		}
+
+		return true;
+	};
 
 	function mixin(dst){
 		for (var i = 1, l = arguments.length; i < l; i++) {
@@ -67,25 +71,54 @@
 		return dst;
 	}
 
-	Function.prototype.extend = function(proto) {
-		var that = this;
-		proto = proto || {};
+	Atomy.extend = function() {
+		var that,
+			proto;
+
+		switch (arguments.length) {
+			default:
+				that = this;
+				proto = {};
+			break;
+
+			case 1:
+				that = this;
+				proto = arguments[0];
+			break;
+
+			case 2:
+				that = arguments[0];
+				proto = arguments[1];
+			break;
+		}
+
 		var constructor = proto.hasOwnProperty('constructor') 
 			? proto.constructor 
-			: function() { that.apply(this, arguments); };
+			: function() {};
 
 		var F = function(){};
-		F.prototype = this.prototype;
+		F.prototype = that.prototype;
 		constructor.prototype = mixin(new F(), proto);
-		constructor.superclass = this.prototype;
+		constructor.superclass = that.prototype;
 		constructor.prototype.constructor = constructor;
 		
+		constructor.extend = Atomy.extend;
+		constructor.constant = function(name, value) {
+			return Atomy.constant(this, name, value);
+		};
+		constructor.statics = function(statics) {
+			return Atomy.statics(this, statics);
+		};
+		constructor.inject = function(prototype) {
+			return Atomy.inject(this, prototype);
+		}
+
 		return constructor;
 	}
 
-	if (scope.isset('module.exports')) {
+	if (Atomy.isset('module.exports', scope)) {
 		scope.module.exports = Atomy;
-	} else if(scope.isset('define.amd')) {
+	} else if(Atomy.isset('define.amd', scope)) {
 		define([], function() {
 			return Atomy;
 		});
