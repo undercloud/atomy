@@ -1,4 +1,4 @@
-# jsoop
+# Atomy
 Java Script OOP
 
 ## class creation
