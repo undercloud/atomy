@@ -50,8 +50,8 @@
 		var chain = ns.split('.'),
 			root = g || scope;
 
-		for(var i = 0, l = chain.length; i < l; i++) {
-			if(typeof root[chain[i]] === 'undefined') {
+		for (var i = 0, l = chain.length; i < l; i++) {
+			if (typeof root[chain[i]] === 'undefined') {
 				root[chain[i]] = {};
 			}
 
@@ -62,7 +62,7 @@
 	};
 
 	Atomy.constant = function(object, constant, value) {
-		Object.defineProperty (object, constant, { value : value, writable: false });
+		Object.defineProperty(object, constant, { value : value, writable: false });
 		
 		return this;
 	};
@@ -141,18 +141,23 @@
 		constructor.prototype.constructor = constructor;
 		
 		constructor.extend = Atomy.extend;
+		
 		constructor.constant = function(name, value) {
 			return Atomy.constant(this, name, value);
 		};
+		
 		constructor.share = function() {
 			return Atomy.share.apply(null, [this].concat([].slice.call(arguments)));
 		};
+		
 		constructor.inject = function(prototype) {
 			return Atomy.inject.apply(null, [this].concat([].slice.call(arguments)));
 		};
+		
 		constructor.isset = function(path) {
 			return Atomy.isset(path, this);
 		};
+		
 		constructor.prototype.isset = constructor.isset;
 
 		return constructor;
