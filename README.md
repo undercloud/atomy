@@ -1,5 +1,5 @@
 #Atomy
-JavaScript OOP
+Java Script OOP
 
 ##class creation
 ```JavaScript
@@ -83,6 +83,12 @@ try {
 }
 
 XMath.PI; //3.14
+```
+Add constant into existing objects
+```JavaScript
+Atomy.constant(window, 'MYCONST', true);
+window.MYCONST = false;
+window.MYCONST; //true
 ```
 
 ##private
