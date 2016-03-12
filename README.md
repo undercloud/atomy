@@ -51,7 +51,7 @@ var ReversedArray = Atomy.extend(Array, {
   }
 })
 
-var ra = new ReversedArray(1,5,3,4,2);		
+var ra = new ReversedArray(1,5,3,4,2);
 ra.reverseSort(); //[5,4,3,2,1]
 ```
 
@@ -77,7 +77,7 @@ var XMath = Atomy.extend({});
 XMath.constant('PI', 3.14);
 
 try {
-	XMath.PI = 0;
+  XMath.PI = 0;
 } catch (e) {
 
 }
@@ -181,7 +181,7 @@ Animal.getInstance = function() {
     this.__instance__ = new Animal();
   }
 
-	return this.__instance__;
+  return this.__instance__;
 }
 
 var a = Animal.getInstance();
@@ -200,7 +200,7 @@ Atomy.namespace('milkyway.solar.earth',scope);
 //scope.milkyway.solar.earth
 
 Atomy.namespace('milkyway.solar.earth.life').Animal = Atomy.extend({
-	/*...*/
+  /*...*/
 });
 
 var animal = new milkyway.solar.earth.life.Animal();
@@ -213,7 +213,7 @@ Atomy.isset('sort', Array.prototype); //true
 
 var Animal = Atomy.extend({
   say: function() {
-  	/*...*/
+    /*...*/
   }
 });
 
