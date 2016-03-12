@@ -1,7 +1,7 @@
-# Atomy
+#Atomy
 Java Script OOP
 
-## class creation
+##class creation
 ```JavaScript
 var Animal = Atomy.extend({
   weight: 0,
@@ -52,7 +52,7 @@ var ReversedArray = Atomy.extend(Array, {
 })
 
 var ra = new ReversedArray(1,5,3,4,2);		
-ra.reverseSort(); // [5,4,3,2,1]
+ra.reverseSort(); //[5,4,3,2,1]
 ```
 
 ##instanceof
@@ -102,6 +102,7 @@ s.getHiddenProperty(); //Hidden Value
 ```
 
 ##inject
+Extend object prototype
 ```JavaScript
 var Something = Atomy.extend({/*...*/});
 
@@ -121,16 +122,48 @@ Something.inject('square', function(x) {
   return x * x;
 });
 
-some.square(3); // 9
+some.square(3); //9
 ```
-Extends existing objects
+Inject into existing objects
 ```JavaScript
 Atomy.inject(Array, 'reverseSort', function() {
   return this.sort().reverse()
 });
 
 var a = [6,7,3,4,2];
-a.reverseSort(); // [7, 6, 4, 3, 2]
+a.reverseSort(); //[7, 6, 4, 3, 2]
+```
+
+##share
+Same as `Atomy.inject` but extends only static context
+```JavaScript
+var Something = Atomy.extend({/*...*/});
+
+Something.share({
+  foo: 'Bar',
+  getFoo: function() {
+    return this.foo;
+  }
+});
+
+Something.getFoo(); //Bar
+```
+Share single property
+```JavaScript
+Something.inject('square', function(x) {
+  return x * x;
+});
+
+Something
+.square(3); //9
+```
+Share existing objects
+```JavaScript
+Atomy.share(window.location, 'setHash', function(hash) {
+  this.hash = hash;
+});
+
+window.location.setHash('goto');
 ```
 
 ##singletone
@@ -149,17 +182,17 @@ Animal.getInstance = function() {
 var a = Animal.getInstance();
 var b = Animal.getInstance();
 
-a === b // true
+a === b //true
 ```
 
 ##namespace
 ```JavaScript
 Atomy.namespace('milkyway.solar.earth');
-// window.milkyway.solar.earth
+//window.milkyway.solar.earth
 
 var scope = {};
 Atomy.namespace('milkyway.solar.earth',scope);
-// scope.milkyway.solar.earth
+//scope.milkyway.solar.earth
 
 Atomy.namespace('milkyway.solar.earth.life').Animal = Atomy.extend({
 	/*...*/
@@ -170,9 +203,20 @@ var animal = new milkyway.solar.earth.life.Animal();
 
 ##isset
 ```JavaScript
-Object.isset('window.Array.prototype.sort'); //true
+Atomy.isset('window.Array.prototype.sort'); //true
+Atomy.isset('sort', Array.prototype); //true
 
-Object.isset('sort',Array.prototype); // true
+var Animal = Atomy.extend({
+  say: function() {
+  	/*...*/
+  }
+});
+
+var monkey = new Animal();
+monkey.isset('say') //true
+
+Animal.abilities = []; 
+Animal.isset('abilities'); //true
 ```
 
 ##toString
