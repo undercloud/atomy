@@ -1,6 +1,19 @@
 #Atomy
 JavaScript OOP
 
+##installaton
+`npm install atomy`
+
+Browser
+```html
+<script src="/path/to/undercloud.atomy.min.js"></script>
+```
+
+NodeJS
+```js
+var Atomy = require('atomy');
+```
+
 ##class creation
 ```js
 var Animal = Atomy.extend({
