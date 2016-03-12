@@ -1,5 +1,5 @@
 #Atomy
-Java Script OOP
+JavaScript OOP
 
 ##class creation
 ```JavaScript
