@@ -1,0 +1,21 @@
+{
+	"name": "atomy",
+	"license": "MIT",
+	"version": "2.0.0",
+	"description": "JavaScript OOP library",
+	"main": "undercloud.atomy.min.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/undercloud/atomy.git"
+	},
+	"keywords": [
+		"JavaScript",
+		"js",
+		"oop",
+		"object"
+	],
+	"bugs": {
+		"url": "https://github.com/undercloud/atomy/issues"
+	},
+	"homepage": "https://github.com/undercloud/atomy"
+}
