@@ -2,7 +2,7 @@
 JavaScript OOP
 
 ##class creation
-```JavaScript
+```js
 var Animal = Atomy.extend({
   weight: 0,
   abilities: ['eat','breath','see'],
@@ -22,7 +22,7 @@ cat.say(); //I'am Tom
 ```
 
 ##inheritance
-```JavaScript
+```js
 var Monkey = Animal.extend({
   constructor: function(name) {
     Monkey.superclass.constructor.call(this, name);
@@ -39,7 +39,7 @@ monkey.jump(); //I can jump
 ```
 
 ##extends an existing class
-```JavaScript
+```js
 var ReversedArray = Atomy.extend(Array, {
   constructor: function() {
     for (var i in arguments){
@@ -56,7 +56,7 @@ ra.reverseSort(); //[5,4,3,2,1]
 ```
 
 ##instanceof
-```JavaScript
+```js
 var Animal = Atomy.extend({/*...*/});
 
 var Monkey = Animal.extend({/*...*/});
@@ -71,7 +71,7 @@ console.log(new Dog() instanceof Monkey); //false
 ```
 
 ##constant
-```JavaScript
+```js
 var XMath = Atomy.extend({});
 
 XMath.constant('PI', 3.14);
@@ -85,14 +85,14 @@ try {
 XMath.PI; //3.14
 ```
 Add constant into existing objects
-```JavaScript
+```js
 Atomy.constant(window, 'MYCONST', true);
 window.MYCONST = false;
 window.MYCONST; //true
 ```
 
 ##private
-```JavaScript
+```js
 var Something = Atomy.extend({
   constructor: function() {
     var hiddenProperty = 'Hidden Value';
@@ -109,7 +109,7 @@ s.getHiddenProperty(); //Hidden Value
 
 ##inject
 Extend object prototype
-```JavaScript
+```js
 var Something = Atomy.extend({/*...*/});
 
 Something.inject({
@@ -123,7 +123,7 @@ var some = new Something();
 some.getFoo(); //Bar
 ```
 Inject single property
-```JavaScript
+```js
 Something.inject('square', function(x) {
   return x * x;
 });
@@ -131,7 +131,7 @@ Something.inject('square', function(x) {
 some.square(3); //9
 ```
 Inject into existing objects
-```JavaScript
+```js
 Atomy.inject(Array, 'reverseSort', function() {
   return this.sort().reverse()
 });
@@ -142,7 +142,7 @@ a.reverseSort(); //[7, 6, 4, 3, 2]
 
 ##share
 Same as `Atomy.inject` but extends only static context
-```JavaScript
+```js
 var Something = Atomy.extend({/*...*/});
 
 Something.share({
@@ -155,16 +155,15 @@ Something.share({
 Something.getFoo(); //Bar
 ```
 Share single property
-```JavaScript
+```js
 Something.inject('square', function(x) {
   return x * x;
 });
 
-Something
-.square(3); //9
+Something.square(3); //9
 ```
 Share existing objects
-```JavaScript
+```js
 Atomy.share(window.location, 'setHash', function(hash) {
   this.hash = hash;
 });
@@ -173,14 +172,14 @@ window.location.setHash('goto');
 ```
 
 ##singletone
-```JavaScript
+```js
 var Animal = Atomy.extend({});
 
 Animal.__instance__ = null;
 Animal.getInstance = function() {
-	if(this.__instance__ === null) {
-		this.__instance__ = new Animal();
-	}
+  if(this.__instance__ === null) {
+    this.__instance__ = new Animal();
+  }
 
 	return this.__instance__;
 }
@@ -192,7 +191,7 @@ a === b //true
 ```
 
 ##namespace
-```JavaScript
+```js
 Atomy.namespace('milkyway.solar.earth');
 //window.milkyway.solar.earth
 
@@ -208,7 +207,7 @@ var animal = new milkyway.solar.earth.life.Animal();
 ```
 
 ##isset
-```JavaScript
+```js
 Atomy.isset('window.Array.prototype.sort'); //true
 Atomy.isset('sort', Array.prototype); //true
 
@@ -226,7 +225,7 @@ Animal.isset('abilities'); //true
 ```
 
 ##toString
-```JavaScript
+```js
 var Animal = Atomy.extend({
   toString: function() {
     return '[object Atomy]';
